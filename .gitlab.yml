@@ -1,0 +1,124 @@
+default:
+  image: $CI_REGISTRY/dwp/engineering/platform/ci-docker-stable
+  services:
+    - name: docker:20.10.6-dind
+  tags:
+    - docker-in-docker-privileged
+
+variables:
+  ECR_REPOSITORY_NAME: dth-shd-kbv
+  NODE_VERSION: "12-alpine"
+  ESLINT_CONFIG_PATH: "./.eslintrc.js"
+
+include: '/gitlab-ci/includes.yml'
+
+stages:
+  - .pre
+  - update-version
+  - code-quality
+  - code-test
+  - code-analysis
+  - image-build
+  - container-image-test
+
+.branches: &branches
+  only:
+    - branches
+
+test-deployed:
+  image: node:14-alpine
+  stage: code-test
+  script:
+    - npm install
+    - npm run test-deployed
+  timeout: 5m
+  allow_failure: true
+  tags:
+    - docker
+
+fragment-version-check:
+ <<: *branches
+ except:
+   - tags
+   - main
+ allow_failure: true
+
+gitleaks:
+ <<: *branches
+ except:
+   - tags
+   - main
+ allow_failure: true
+
+todo-check:
+  <<: *branches
+  except:
+    - tags
+    - main
+
+shell-check:
+  <<: *branches
+  except:
+    - tags
+    - main
+  allow_failure: true
+
+docker-lint:
+  <<: *branches
+  except:
+    - tags
+    - main
+  allow_failure: true
+
+lint-source:
+  variables:
+    SOURCE_DIR: .
+  <<: *branches
+
+unit-test:
+  <<: *branches
+  except:
+    - tags
+    - main
+
+node-audit:
+  <<: *branches
+  except:
+    - tags
+    - main
+  allow_failure: true
+
+node-outdated:
+ <<: *branches
+ except:
+   - tags
+   - main
+ allow_failure: true
+
+docker-build:
+  only:
+    - branches
+    - tags
+  except:
+    variables:
+      - $PROD_AWS_ACCESS_KEY_ID
+      - $PROD_AWS_SECRET_ACCESS_KEY
+      - $PROD_AWS_SESSION_TOKEN
+
+container-test-command:
+  <<: *branches
+  except:
+    - tags
+    - main
+
+sast-container:
+  <<: *branches
+  except:
+    - tags
+    - main
+
+trivy-container:
+  <<: *branches
+  except:
+    - tags
+    - main
