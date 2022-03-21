@@ -3,11 +3,6 @@ const path = require('path');
 const nunjucks = require('nunjucks');
 let app = express();
 const bodyParser = require('body-parser');
-const landingRouter = require('./app/routes/landing');
-const getWorkerRouter = require('./app/routes/get-worker');
-const getInvalidRouter = require('./app/routes/get-invalid');
-const getAllRouter = require('./app/routes/get-all');
-const workersByHomeRouter = require('./app/routes/workers-by-home')
 
 const { getTimeStamp } = require('./app/utils');
 
@@ -31,11 +26,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use('/css', express.static(path.resolve(__dirname, 'app/public/css')));
-app.use('/get-worker', getWorkerRouter);
-app.use('/get-invalid', getInvalidRouter);
-app.use('/get-all', getAllRouter);
-app.use('/worker-by-home', workersByHomeRouter);
-app.use('/', landingRouter);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
