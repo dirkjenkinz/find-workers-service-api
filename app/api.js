@@ -3,7 +3,8 @@ const { logger } = require('../../worker-store-api/app/utils');
 
 const findWorkersByLocation = async (location) => {
     logger.info('findWorkersByLocation');
-    let response = await axios.get(`http://localhost:8080/v1/workers/${location.latitude}, ${location.longitude}`);
+    console.log('location=', location);
+    const response = await axios.get(`http://localhost:8080/v1/workers/${location.latitude}, ${location.longitude}`);
     logger.info('response=', response.data);
     return response.data;
 }

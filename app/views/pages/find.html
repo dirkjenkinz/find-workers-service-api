@@ -14,43 +14,44 @@ Workers Utility - Update
 {% block content %}
 <div class="govuk-grid-column-two-thirds">
   <div class="govuk-grid-row">
-    <form class="form" action="/post-find">
+    <form class="form" action="/", method="POST">
       {% call govukFieldset({
-      legend: {
-      text: "Find Workers by Location",
-      classes: "govuk-fieldset__legend--l",
-      isPageHeading: true
-      }
+        legend: {
+          text: "Find Workers by Location",
+          classes: "govuk-fieldset__legend--l",
+          isPageHeading: true
+        }
       }) %}
 
       {{ govukInput({
-      label: {
-      text: "Latitude"
-      },
-      classes: "govuk-input--width-10",
-      id: "latitude",
-      name: "latitude",
-      value: latitude
+        label: {
+          text: "Latitude"
+        },
+        classes: "govuk-input--width-10",
+        id: "latitude",
+        name: "latitude",
+        value: latitude
       }) }}
 
       {{ govukInput({
         label: {
-        text: "Longitude"
+          text: "Longitude"
         },
         classes: "govuk-input--width-10",
         id: "longitude",
         name: "longitude",
         value: longitude
-        }) }}
+      }) }}
 
       {% endcall %}
+      <h3>{{message}}</h3>
       {{ govukButton({
-      text: "Find workers"
+        text: "Find workers"
       }) }}
     </form>
   </div>
-  </div>
-  {% if data !== '' %}
+</div>
+{% if data !== '' %}
   <div class="govuk-grid-row">
     <table class="govuk-table" id="workerTable">
       <thead class="govuk-table__head">

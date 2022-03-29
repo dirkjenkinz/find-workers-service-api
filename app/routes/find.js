@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-const { getFind } = require('../handlers/get-find-handler');
-
+const { getFind, postFind } = require('../handlers/find-handler');
 router.get('/', getFind);
+router.post('/', postFind);
 module.exports = router;

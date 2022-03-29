@@ -3,8 +3,7 @@ const path = require('path');
 const nunjucks = require('nunjucks');
 let app = express();
 const bodyParser = require('body-parser');
-const getFindRouter = require('./app/routes/get-find');
-const postFindRouter = require('./app/routes/post-find');
+const findRouter = require('./app/routes/find');
 
 const {logger} = require('./app/utils')
 const { getTimeStamp } = require('./app/utils');
@@ -27,8 +26,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use('/css', express.static(path.resolve(__dirname, 'app/public/css')));
-app.use('/', getFindRouter);
-app.use('/post-find', postFindRouter);
+app.use('/', findRouter);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
