@@ -29,7 +29,7 @@ describe("Get worker", () => {
     test("it should call axios", async () => {
         axios.get.mockResolvedValueOnce(workerList);
         const response = await findWorkersByLocation({"latitude": 6, "longitude": 1});
-        expect(axios.get).toHaveBeenCalledWith('http://localhost:8080/v1/workers/'+{latitude: 6, longitude: 1});
+        expect(axios.get).toHaveBeenCalledWith('http://localhost:8080/v1/workers/6, 1');
     });
 
 });
