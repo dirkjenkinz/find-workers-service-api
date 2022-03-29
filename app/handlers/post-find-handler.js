@@ -8,7 +8,7 @@ const postFind = async (req, res) => {
     console.log(u.query);
     let response = await findWorkersByLocation({latitude: u.query.latitude, longitude: u.query.longitude});
     if (response.length === 0) response = '';
-    console.log(response)
+    
     res.render('pages/find', {
         data: response,
     });
