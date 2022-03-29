@@ -1,3 +1,13 @@
+const {createLogger, transports} = require('winston');
+const logger = createLogger({
+    level: "debug",
+    transports:
+    [
+        new transports.Console(),
+        new transports.File({'filename': 'app.log'})
+    ]
+});
+
 const MONTH = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 const getTimeStamp = () => {
@@ -17,4 +27,4 @@ const getTimeStamp = () => {
     return [date, time];
 }
 
-module.exports = {getTimeStamp};
+module.exports = {getTimeStamp, logger};

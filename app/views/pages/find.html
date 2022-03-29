@@ -1,0 +1,79 @@
+/** * Created by Patrick Whittaker */
+
+{% extends "layout/layout.html" %}
+{% from "input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% block pageTitle %}
+Workers Utility - Update
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <form class="form" action="/post-find">
+      {% call govukFieldset({
+      legend: {
+      text: "Find Workers by Location",
+      classes: "govuk-fieldset__legend--l",
+      isPageHeading: true
+      }
+      }) %}
+
+      {{ govukInput({
+      label: {
+      text: "Latitude"
+      },
+      classes: "govuk-input--width-10",
+      id: "latitude",
+      name: "latitude",
+      value: latitude
+      }) }}
+
+      {{ govukInput({
+        label: {
+        text: "Longitude"
+        },
+        classes: "govuk-input--width-10",
+        id: "longitude",
+        name: "longitude",
+        value: longitude
+        }) }}
+
+      {% endcall %}
+      {{ govukButton({
+      text: "Find workers"
+      }) }}
+    </form>
+  </div>
+  </div>
+  {% if data !== '' %}
+  <div class="govuk-grid-row">
+    <table class="govuk-table" id="workerTable">
+      <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header">Worker ID</th>
+        <th class="govuk-table__header">Name</th>
+        <th class="govuk-table__header">Location (Latitude, Longitude)</th>
+        <th class="govuk-table__header">Home</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for item in data %}
+      <tr class="govuk-table__row" id='line{{loop.index}}'>
+        <td class="govuk-table__cell" id='wid{{loop.index}}'>{{item.workerId}}</td>
+        <td class="govuk-table__cell" id='name{{loop.index}}'>{{item.name}}</td>
+        <td class="govuk-table__cell" id='location{{loop.index}}'>{{item.location.latitude}}, {{item.location.longitude}}</td>
+        <td class="govuk-table__cell" id='home{{loop.index}}'>{{item.home}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    </table>
+  </div>
+  {% endif %}
+{% endblock %}
