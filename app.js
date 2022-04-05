@@ -4,10 +4,19 @@ const nunjucks = require('nunjucks');
 let app = express();
 const bodyParser = require('body-parser');
 const findRouter = require('./app/routes/find');
-
 const {logger} = require('./app/utils')
 const { getTimeStamp } = require('./app/utils');
 const router = express.Router;
+const helmet = require('helmet');
+const csp = require('helmet-csp');
+const { v4: uuid_v4 } = require('uuid');
+
+/* Generate nonce. */
+const nonce = Buffer.from(uuid_v4().toString('base64'));
+app.use((req, res, next) => {
+  res.locals.nonce = nonce;
+  next();
+});
 
 nunjucks.configure(['views',
     path.join(__dirname, 'node_modules/govuk-frontend/'),
@@ -25,13 +34,32 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use(helmet());
+
+app.use(csp({
+    directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        scriptSrc: [
+            "'self'",
+            `'nonce-${nonce}'`, // Pass the nonce value along.
+            "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
+          ],
+        imgSrc: ["'self'"],
+        fontSrc: ["'self'"]
+    }
+}));
+
+// referrerPolicy
+app.use(helmet.referrerPolicy({ policy: 'no-referrer-when-downgrade' }));
+
 app.use('/css', express.static(path.resolve(__dirname, 'app/public/css')));
 app.use('/', findRouter);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
     const t = getTimeStamp();
-    logger.info(`Workers Store API up and running on port ${PORT} at ${t[0]} - ${t[1]}`);
+    logger.info(`Find workers service API up and running on port ${PORT} at ${t[0]} - ${t[1]}`);
 });
 
 module.exports = { app, router };
