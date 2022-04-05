@@ -24,12 +24,15 @@
   },
   "devDependencies": {
     "axios": "^0.26.1",
+    "csp": "0.0.1-alpha1",
     "govuk-frontend": "^4.0.1",
     "helmet": "^5.0.2",
+    "helmet-csp": "^3.4.0",
     "jest": "^27.5.1",
     "nocache": "^3.0.1",
     "nunjucks": "^3.2.3",
     "path": "^0.12.7",
+    "uuid": "^8.3.2",
     "winston": "^3.6.0"
   }
 }
