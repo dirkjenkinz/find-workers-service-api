@@ -8,7 +8,7 @@ const getFind = async (req, res) => {
     } else {
         res.render('pages/find', {
             data: '',
-            msg: ''
+            msg: '',
         });
     };
 };
@@ -29,5 +29,5 @@ const postFind = async (req, res) => {
 
 module.exports = {
     getFind,
-    postFind
+    postFind,
 };
