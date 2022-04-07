@@ -26,7 +26,7 @@ const postFind = async (req, res) => {
 
     let response = await findWorkersByLocation(req.body);
     let msg = '';
-    console.log('response=', response)
+
     if (response.length === 0) {
         response = '';
         msg = 'No matching records found';
@@ -34,6 +34,8 @@ const postFind = async (req, res) => {
     res.render('pages/find', {
         data: response,
         message: msg,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
     });
 };
 
